@@ -1,0 +1,53 @@
+# Render.com deployment configuration
+databases:
+  - name: bremray-db
+    databaseName: bremray_production
+    user: bremray
+    plan: starter
+
+services:
+  - type: web
+    name: bremray-api
+    runtime: ruby
+    plan: starter
+    buildCommand: "./bin/render-build.sh"
+    startCommand: "bundle exec puma -C config/puma.rb"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: bremray-db
+          property: connectionString
+      - key: RAILS_MASTER_KEY
+        sync: false
+      - key: RAILS_ENV
+        value: production
+      - key: ALLOWED_ORIGINS
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: WAVE_API_KEY
+        sync: false
+      - key: AWS_ACCESS_KEY_ID
+        sync: false
+      - key: AWS_SECRET_ACCESS_KEY
+        sync: false
+      - key: AWS_REGION
+        value: auto
+      - key: AWS_ENDPOINT_URL_S3
+        sync: false
+      - key: TWILIO_ACCOUNT_SID
+        sync: false
+      - key: TWILIO_AUTH_TOKEN
+        sync: false
+      - key: TWILIO_PHONE_NUMBER
+        sync: false
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: bremray-redis
+          property: connectionString
+
+  - type: redis
+    name: bremray-redis
+    plan: starter
+    maxmemoryPolicy: allkeys-lru

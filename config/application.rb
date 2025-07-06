@@ -23,6 +23,11 @@ module Codex
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 8.0
 
+    # Use UUIDs as primary keys
+    config.generators do |g|
+      g.orm :active_record, primary_key_type: :uuid
+    end
+
     # Please, add to the `ignore` list any other `lib` subdirectories that do
     # not contain `.rb` files, or that should not be reloaded or eager loaded.
     # Common ones are `templates`, `generators`, or `middleware`, for example.

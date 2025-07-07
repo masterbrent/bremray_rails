@@ -1,0 +1,3 @@
+# This is a placeholder for test_image.jpg
+# In a real project, you would place actual test images here
+# For now, we'll mock the file uploads in tests
